@@ -1,0 +1,78 @@
+<html>
+<head>
+    <title>Item Details</title>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript" class="init">
+	    $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+    <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto">
+    <style>
+        body {
+            font-family: 'Roboto';
+            font-size: 12px;
+        }
+
+        table.dataTable td {
+            font-size: 12px;
+        }
+
+        table.dataTable th {
+            font-size: 14px;
+        }
+    </style>
+
+</head>
+<body>
+
+    {% for library, predictions in predictions.items() %}
+    
+    <script type="text/javascript" class="init">
+	    $(document).ready(function () {
+            $('#example_{{loop.index}}').DataTable();
+        });
+    </script>
+    
+    <h1>{{library}}</h1>
+    <h4>Gene AUC: {{"%.3f"|format(predictions["auc"])}}</h4>
+    <table id="example_{{loop.index}}" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Gene Set</th>
+                <th>Association Score</th>
+                <th>Reliability</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for pred in predictions["prediction"] %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{pred.term}}</td>
+                        <td>{{"%.3f"|format(pred.score)}}</td>
+                        <td>{{"%.3f"|format(pred.term_auc)}}</td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Rank</th>
+                <th>Gene Set</th>
+                <th>Association Score</th>
+                <th>Reliability</th>
+            </tr>
+        </tfoot>
+    </table>
+    <hr/>
+    {% endfor %}
+
+</body>
+</html>
