@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 import urllib.request
-
+from scipy import stats
 
 ENDPOINT = os.getenv('ENDPOINT', "hype")
 S3_PREDICTION_URL = os.getenv('S3_PREDICTION_URL', "https://mssm-data.s3.amazonaws.com/px_predictions.2.1.2.h5")
@@ -38,7 +38,7 @@ def loadSetsS3(library):
 
 def loadGenePredictionS3(library, idx):
     with h5.File(file_path, 'r') as f:
-        return np.array(f[library+"/prediction"][idx, :])[0]
+        return stats.zscore(np.array(f[library+"/prediction"][idx, :])[0])
 
 def loadGeneAUCS3(library, idx):
     with h5.File(file_path, 'r') as f:
@@ -56,9 +56,8 @@ def get_predictions(gene_symbol):
     result = {}
     result["gene"] = gene_symbol
     result["predictions"] = {}
+    genes = loadGenesS3(libraries[0])
     for lib in libraries:
-        print(lib)
-        genes = loadGenesS3(lib)
         sets = loadSetsS3(lib)
         idx = np.where(genes == gene_symbol.upper())[0]
         predictions = loadGenePredictionS3(lib, idx)
@@ -91,9 +90,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/"+ENDPOINT+"/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/gene/{gene_symbol}", response_class=HTMLResponse)
+@app.get("/"+ENDPOINT, response_class=HTMLResponse)
+async def main_page(request: Request):
+    return templates.TemplateResponse("main.html", {"request": request, "genes": allgenes, "endpoint": ENDPOINT})
+
+@app.get("/"+ENDPOINT+"/gene/{gene_symbol}", response_class=HTMLResponse)
 async def read_item(request: Request, gene_symbol: str):
     predictions = get_predictions(gene_symbol)
     return templates.TemplateResponse("gene.html", {"request": request, "gene_symbol": gene_symbol, "predictions": predictions["predictions"]})
@@ -105,6 +108,10 @@ def read_root():
 @app.get("/"+ENDPOINT+"/api/v1/gene/{gene_symbol}")
 def get_gene_predictions(gene_symbol: str):
     return get_predictions(gene_symbol)
+
+@app.get("/"+ENDPOINT+"/api/v1/genes")
+def get_genes(gene_symbol: str):
+    return allgenes
 
 @app.post("/"+ENDPOINT+"/api/v1/texify")
 async def postlatex(info : Request):

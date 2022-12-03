@@ -25,4 +25,4 @@ ADD templates /hype/templates
 
 EXPOSE 5050
 
-ENTRYPOINT ["uvicorn", "main:app", "--port", "5557", "--host", "0.0.0.0"]
+ENTRYPOINT ["uvicorn", "main:app", "--port", "5557", "--host", "0.0.0.0", "--proxy-headers"]

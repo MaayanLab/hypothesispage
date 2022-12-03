@@ -1,47 +1,25 @@
-<html>
-<head>
-    <title>Item Details</title>
-    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-
-    <script type="text/javascript" class="init">
-	    $(document).ready(function () {
-            $('#example').DataTable();
-        });
-    </script>
-
-    <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Roboto">
-    <style>
-        body {
-            font-family: 'Roboto';
-            font-size: 12px;
-        }
-
-        table.dataTable td {
-            font-size: 12px;
-        }
-
-        table.dataTable th {
-            font-size: 14px;
-        }
-    </style>
-
-</head>
-<body>
+<div class="nopad">
+    |
+    {% for library, predictions in predictions.items() %}
+        <a href="#{{library}}">{{library | replace("_", " ")}}</a> |
+    {% endfor %}
 
     {% for library, predictions in predictions.items() %}
     
     <script type="text/javascript" class="init">
 	    $(document).ready(function () {
-            $('#example_{{loop.index}}').DataTable();
+            $('#example_{{loop.index}}').DataTable({
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "20px", "targets": 0 },
+                    { "width": "50px", "targets": 2 },
+                    { "width": "50px", "targets": 3 }
+                ]
+            });
         });
     </script>
-    
-    <h1>{{library}}</h1>
+
+    <h2 id="{{library}}">{{library | replace("_", " ")}}</h2>
     <h4>Gene AUC: {{"%.3f"|format(predictions["auc"])}}</h4>
     <table id="example_{{loop.index}}" class="display" style="width:100%">
         <thead>
@@ -49,7 +27,7 @@
                 <th>Rank</th>
                 <th>Gene Set</th>
                 <th>Association Score</th>
-                <th>Reliability</th>
+                <th>Set Reliability</th>
             </tr>
         </thead>
         <tbody>
@@ -62,17 +40,8 @@
                     </tr>
                 {% endfor %}
         </tbody>
-        <tfoot>
-            <tr>
-                <th>Rank</th>
-                <th>Gene Set</th>
-                <th>Association Score</th>
-                <th>Reliability</th>
-            </tr>
-        </tfoot>
+      
     </table>
-    <hr/>
-    {% endfor %}
 
-</body>
-</html>
+    {% endfor %}
+</div>
