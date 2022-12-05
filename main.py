@@ -19,6 +19,9 @@ import pandas as pd
 from tqdm import tqdm
 import urllib.request
 from scipy import stats
+import json
+import ssl
+
 
 ENDPOINT = os.getenv('ENDPOINT', "hype")
 S3_PREDICTION_URL = os.getenv('S3_PREDICTION_URL', "https://mssm-data.s3.amazonaws.com/px_predictions.2.1.2.h5")
@@ -27,6 +30,14 @@ if not os.path.exists("prediction.h5"):
     urllib.request.urlretrieve(S3_PREDICTION_URL, "prediction.h5")
 
 file_path = "prediction.h5"
+
+def load_json(url):
+    context = ssl._create_unverified_context()
+    req = urllib.request.Request(url)
+    r = urllib.request.urlopen(req, context=context).read()
+    return(json.loads(r.decode('utf-8')))
+
+libraries = load_json("https://maayanlab.cloud/speedrichr/api/listlibs")["library"]
 
 def loadGenesS3(library):
     with h5.File(file_path, 'r') as f:
@@ -99,7 +110,7 @@ async def main_page(request: Request):
 @app.get("/"+ENDPOINT+"/gene/{gene_symbol}", response_class=HTMLResponse)
 async def read_item(request: Request, gene_symbol: str):
     predictions = get_predictions(gene_symbol)
-    return templates.TemplateResponse("gene.html", {"request": request, "gene_symbol": gene_symbol, "predictions": predictions["predictions"]})
+    return templates.TemplateResponse("gene.html", {"request": request, "gene_symbol": gene_symbol, "predictions": predictions["predictions"], "enrichr_libraries": libraries})
 
 @app.get("/"+ENDPOINT+"/api/v1")
 def read_root():

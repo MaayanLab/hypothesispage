@@ -1,8 +1,22 @@
 <div class="nopad">
-    |
+    
+
     {% for library, predictions in predictions.items() %}
         <a href="#{{library}}">{{library | replace("_", " ")}}</a> |
     {% endfor %}
+
+    <div class="appyter_lib_select nopad">
+        <div class="nopad fleft">
+            Open PrismEXP Appyter for additional gene-set libraries.<br>
+            <select name="library" id="library_selection">
+                {% for library in enrichr_libraries %}
+                    <option value="{{library}}">{{library}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button class="appyter_btn fleft" onclick="startAppyter()"></button>
+    </div>
+   
 
     {% for library, predictions in predictions.items() %}
     
