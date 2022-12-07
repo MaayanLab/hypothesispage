@@ -21,6 +21,7 @@ import urllib.request
 from scipy import stats
 import json
 import ssl
+import re
 
 
 ENDPOINT = os.getenv('ENDPOINT', "hype")
@@ -37,7 +38,7 @@ def load_json(url):
     r = urllib.request.urlopen(req, context=context).read()
     return(json.loads(r.decode('utf-8')))
 
-libraries = load_json("https://maayanlab.cloud/speedrichr/api/listlibs")["library"]
+enrichr_libraries = load_json("https://maayanlab.cloud/speedrichr/api/listlibs")["library"]
 
 def loadGenesS3(library):
     with h5.File(file_path, 'r') as f:
@@ -82,12 +83,28 @@ def get_predictions(gene_symbol):
         result["predictions"][lib]["auc"] = float(gauc[0])
         result["predictions"][lib]["prediction"] = setinfo
     return result 
-    
+
+def read_gmt(gmt_file: str):
+    url = "https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName="+gmt_file
+    req = urllib.request.Request(url)
+    with urllib.request.urlopen(req) as resp:
+        lib = resp.read()
+    lines = lib.decode("UTF-8").split("\n")
+    library = {}
+    for line in lines:
+        sp = line.strip().upper().split("\t")
+        sp2 = [re.sub(",.*", "",value) for value in sp[2:]]
+        sp2 = [x for x in sp2 if x] 
+        library[sp[0]] = sp2
+    return library
+
+gold_library = {}
 allgenes = []
 libraries = []
 with h5.File(file_path, 'r') as f:
     libraries = [k for k in f.keys()]
 for lib in libraries:
+    gold_library[lib] = read_gmt(lib)
     allgenes = allgenes+loadGenesS3(lib).tolist()
 allgenes = list(set(allgenes))
 
@@ -109,8 +126,13 @@ async def main_page(request: Request):
 
 @app.get("/"+ENDPOINT+"/gene/{gene_symbol}", response_class=HTMLResponse)
 async def read_item(request: Request, gene_symbol: str):
-    predictions = get_predictions(gene_symbol)
-    return templates.TemplateResponse("gene.html", {"request": request, "gene_symbol": gene_symbol, "predictions": predictions["predictions"], "enrichr_libraries": libraries})
+    try:
+        predictions = get_predictions(gene_symbol)
+        return templates.TemplateResponse("gene.html", {"request": request, "gene_symbol": gene_symbol, "predictions": predictions["predictions"], "enrichr_libraries": enrichr_libraries, "gold": gold_library})
+    except Exception:
+        return templates.TemplateResponse("error.html", {"request": request, "gene_symbol": gene_symbol, "endpoint": ENDPOINT})
+
+    
 
 @app.get("/"+ENDPOINT+"/api/v1")
 def read_root():
@@ -118,7 +140,10 @@ def read_root():
 
 @app.get("/"+ENDPOINT+"/api/v1/gene/{gene_symbol}")
 def get_gene_predictions(gene_symbol: str):
-    return get_predictions(gene_symbol)
+    try:
+        return get_predictions(gene_symbol)
+    except Exception:
+        return {"error": "gene missing"}
 
 @app.get("/"+ENDPOINT+"/api/v1/genes")
 def get_genes(gene_symbol: str):

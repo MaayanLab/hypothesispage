@@ -1,24 +1,23 @@
 <div class="nopad">
     
-
-    {% for library, predictions in predictions.items() %}
+    | 
+    {% for library, predictions in predictions.items()  if not library == "OMIM_Disease" %}
         <a href="#{{library}}">{{library | replace("_", " ")}}</a> |
     {% endfor %}
-
+    
     <div class="appyter_lib_select nopad">
         <div class="nopad fleft">
-            Open PrismEXP Appyter for additional gene-set libraries.<br>
+            Open PrismEXP Appyter for additional gene-set libraries:<br>
             <select name="library" id="library_selection">
-                {% for library in enrichr_libraries %}
-                    <option value="{{library}}">{{library}}</option>
+                {% for lib in enrichr_libraries %}
+                    <option value="{{lib}}">{{lib}}</option>
                 {% endfor %}
             </select>
         </div>
         <button class="appyter_btn fleft" onclick="startAppyter()"></button>
     </div>
    
-
-    {% for library, predictions in predictions.items() %}
+    {% for library, predictions in predictions.items() if not library == "OMIM_Disease" %}
     
     <script type="text/javascript" class="init">
 	    $(document).ready(function () {
@@ -34,19 +33,36 @@
     </script>
 
     <h2 id="{{library}}">{{library | replace("_", " ")}}</h2>
-    <h4>Gene AUC: {{"%.3f"|format(predictions["auc"])}}</h4>
+    <h4>Gene AUC: {{"%.3f"|format(predictions["auc"])}}
+        <div class="tooltip">
+        <i class="fa fa-question-circle-o"><span class="tooltiptext">The gene AUC reflects how well known gene functions of {{gene_symbol}} could be retrieved. An AUC of 1 would represent perfect ranking of gene functions and 0.5 would be random. Entries colored <i class="fa fa-square green" aria-hidden="true"></i> represent known gene functions.</span></i>
+        </div>
+    </h4>
     <table id="example_{{loop.index}}" class="display" style="width:100%">
         <thead>
             <tr>
                 <th>Rank</th>
                 <th>Gene Set</th>
-                <th>Association Score</th>
-                <th>Set Reliability</th>
+                <th>Association <nobr>Score
+                    <div class="tooltip">
+                        <i class="fa fa-question-circle-o"><span class="tooltiptext">The Association Score of {{gene_symbol}} to the respective gene function can be interpreted like a z-score. The higher the score the more significant the association.</span></i>
+                    </div></nobr>
+                </th>
+                <th>Set <nobr>Reliability
+                    <div class="tooltip">
+                        <i class="fa fa-question-circle-o"><span class="tooltiptext">Set Reliability is a property of the gene function. It is the AUC capturing how well known associated genes are ranked in the PrismEXP prediction.</span></i>
+                    </div>
+                    </nobr>
+                </th>
             </tr>
         </thead>
         <tbody>
                 {% for pred in predictions["prediction"] %}
-                    <tr>
+                    {% if gene_symbol in gold[library][pred.term] %}
+                        <tr class="gold">
+                    {% else %}
+                        <tr>
+                    {% endif %}
                         <td>{{loop.index}}</td>
                         <td>{{pred.term}}</td>
                         <td>{{"%.3f"|format(pred.score)}}</td>
@@ -54,8 +70,9 @@
                     </tr>
                 {% endfor %}
         </tbody>
-      
     </table>
 
     {% endfor %}
+
 </div>
+

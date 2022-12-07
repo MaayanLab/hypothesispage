@@ -43,15 +43,17 @@
 
         function submitGeneSearch(){
             gene_sym = $("#genesymbolsearch").val();
-            $('#predictions').fadeOut();
-            $('#datawait').fadeIn();
-            fetch('/{{endpoint}}/gene/'+gene_sym)
-                .then((response) => response.text())
-                .then((text) => {
-                    $("#predictions").html(text);
-                    $('#datawait').delay(500).fadeOut(200);
-                    $('#predictions').delay(1100).fadeIn();
-                });
+            if(gene_sym.length > 0){
+                $('#predictions').fadeOut();
+                $('#datawait').fadeIn();
+                fetch('/{{endpoint}}/gene/'+gene_sym)
+                    .then((response) => response.text())
+                    .then((text) => {
+                        $("#predictions").html(text);
+                        $('#datawait').delay(500).fadeOut(200);
+                        $('#predictions').delay(1100).fadeIn();
+                    });
+                }
         }
 
         function submitExample(genesym){
@@ -80,6 +82,10 @@
                 }
             });
         });
+
+        $(document).on('click', function() {
+            $(".autocomplete-suggestions").css("display", "none");
+        })
     </script>
 
     <style>
@@ -375,6 +381,14 @@ table {
   animation-delay: -1s;
 }
 
+#library_selection{
+    width: 330px;
+}
+
+.gold {
+    background-color: #00ffd5 !important;
+}
+
 /* Animation */
 @keyframes animate {
   0%,
@@ -482,6 +496,63 @@ table {
     float: left;
 }
 
+.tooltip {
+  padding: 0px !important;
+  opacity: 1 !important;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 80%;
+    max-width: 600px;
+    display: hidden;
+}
+
+.error img {
+    width: 160px;
+}
+
+.error span {
+    max-width: 400px;
+    margin-left: 20px;
+}
+
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    font-family: "Poppins", sans-serif;
+    transform: translateX(-50%);
+    margin-top: 18px;
+    visibility: hidden;
+    background: rgba(51, 51, 51, 0.65);
+    backdrop-filter: blur(5px);
+    color: white;
+    font-weight: bold;
+    padding: 12px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    width: 240px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+.green {
+    color: #00ffd5;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+</style>
+
     </style>
 
 </head>
@@ -492,7 +563,7 @@ table {
             <div id="wrapper" class="d-flex p-2">
                 <div id="first">
                     <h1>PrismEXP</h1>
-                    <h3>Submit a human gene symbol to retrieve precomputed predictions about the gene's functions based on selected gene set libraries from Enrichr</h3>
+                    <h3>Submit a human gene symbol to retrieve precomputed predictions about the gene's functions based on automatically vertically partitioned gene-gene co-expression matrices from <a href="https://maayanlab.cloud/archs4" target="_blank">ARCHS4</a>, and selected gene set libraries from <a href="https://maayanlab.cloud/Enrichr/" target="_blank">Enrichr</a>.</h3>
                 </div>
                 <div id="second">
                     <img src="{{endpoint}}/static/prismexp_white.png" width=100>
