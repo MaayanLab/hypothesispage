@@ -551,9 +551,35 @@ table {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.workflow {
+    float: right;
+    margin-right: 0px;
+}
+
+.workflow img {
+    width: 100px;
+}
+
+.workflow img:hover {
+    width: 100px;
+    -webkit-filter: drop-shadow(3px 3px 3px #666);
+    filter: drop-shadow(3px 3px 3px #666);
+}
+
 </style>
 
-    </style>
+</style>
+
+<script>
+    if (window.location.href.match(/\/gene\//)) {
+        var suffix = window.location.href.substring(window.location.href.indexOf("gene/") + "gene/".length);
+        console.log("works nice:", suffix)
+    }
+    else{
+        console.log("nothing")
+    }
+</script>
 
 </head>
 <body>

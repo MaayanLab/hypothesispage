@@ -124,15 +124,18 @@ app.mount("/"+ENDPOINT+"/static", StaticFiles(directory="static"), name="static"
 async def main_page(request: Request):
     return templates.TemplateResponse("main.html", {"request": request, "genes": allgenes, "endpoint": ENDPOINT})
 
+@app.get("/"+ENDPOINT+"/workflow", response_class=HTMLResponse)
+async def workflow_page(request: Request):
+    return templates.TemplateResponse("workflow.html", {"request": request})
+
 @app.get("/"+ENDPOINT+"/gene/{gene_symbol}", response_class=HTMLResponse)
 async def read_item(request: Request, gene_symbol: str):
     try:
         predictions = get_predictions(gene_symbol)
-        return templates.TemplateResponse("gene.html", {"request": request, "gene_symbol": gene_symbol, "predictions": predictions["predictions"], "enrichr_libraries": enrichr_libraries, "gold": gold_library})
+        return templates.TemplateResponse("gene.html", {"request": request, "gene_symbol": gene_symbol, "predictions": predictions["predictions"], "enrichr_libraries": enrichr_libraries, "gold": gold_library, "endpoint": ENDPOINT})
     except Exception:
         return templates.TemplateResponse("error.html", {"request": request, "gene_symbol": gene_symbol, "endpoint": ENDPOINT})
 
-    
 
 @app.get("/"+ENDPOINT+"/api/v1")
 def read_root():
@@ -153,7 +156,6 @@ def get_genes(gene_symbol: str):
 async def postlatex(info : Request):
     data = await info.json()
     print(data)
-    
     return {
         "status" : "SUCCESS",
         "data" : data

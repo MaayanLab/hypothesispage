@@ -1,6 +1,11 @@
 <div class="nopad">
     
-    | 
+    <div class="workflow">
+        <a href="{{endpoint}}/workflow" target="_blank">
+            <img src="{{endpoint}}/static/jupyter.png" class="jupyter_icon">
+        </a>
+    </div>
+    |
     {% for library, predictions in predictions.items()  if not library == "OMIM_Disease" %}
         <a href="#{{library}}">{{library | replace("_", " ")}}</a> |
     {% endfor %}
