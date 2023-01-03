@@ -24,7 +24,8 @@ import ssl
 import re
 
 
-ENDPOINT = os.getenv('ENDPOINT', "hype")
+ENDPOINT = os.getenv('ENDPOINT', "prismexp")
+ENDPOINT_API = os.getenv('ENDPOINT_API', "prismexp")
 S3_PREDICTION_URL = os.getenv('S3_PREDICTION_URL', "https://mssm-data.s3.amazonaws.com/px_predictions.2.1.2.h5")
 
 if not os.path.exists("prediction.h5"):
@@ -118,17 +119,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/"+ENDPOINT+"/static", StaticFiles(directory="static"), name="static")
+app.mount("/"+ENDPOINT_API+"/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/"+ENDPOINT, response_class=HTMLResponse)
+@app.get("/"+ENDPOINT_API, response_class=HTMLResponse)
 async def main_page(request: Request):
-    return templates.TemplateResponse("main.html", {"request": request, "genes": allgenes, "endpoint": ENDPOINT})
+    return templates.TemplateResponse("main.html", {"request": request, "genes": allgenes, "genesymbol": "", "endpoint": ENDPOINT})
 
-@app.get("/"+ENDPOINT+"/workflow", response_class=HTMLResponse)
+@app.get("/"+ENDPOINT_API+"/g/{gene_symbol}", response_class=HTMLResponse)
+async def main_page_gene(request: Request, gene_symbol: str):
+    return templates.TemplateResponse("main.html", {"request": request, "genes": allgenes, "genesymbol": gene_symbol, "endpoint": ENDPOINT})
+
+@app.get("/"+ENDPOINT_API+"/workflow", response_class=HTMLResponse)
 async def workflow_page(request: Request):
     return templates.TemplateResponse("workflow.html", {"request": request})
 
-@app.get("/"+ENDPOINT+"/gene/{gene_symbol}", response_class=HTMLResponse)
+@app.get("/"+ENDPOINT_API+"/gene/{gene_symbol}", response_class=HTMLResponse)
 async def read_item(request: Request, gene_symbol: str):
     try:
         predictions = get_predictions(gene_symbol)
@@ -137,22 +142,22 @@ async def read_item(request: Request, gene_symbol: str):
         return templates.TemplateResponse("error.html", {"request": request, "gene_symbol": gene_symbol, "endpoint": ENDPOINT})
 
 
-@app.get("/"+ENDPOINT+"/api/v1")
+@app.get("/"+ENDPOINT_API+"/api/v1")
 def read_root():
     return {"Hello": "This is the API for the hypothesis page"}
 
-@app.get("/"+ENDPOINT+"/api/v1/gene/{gene_symbol}")
+@app.get("/"+ENDPOINT_API+"/api/v1/gene/{gene_symbol}")
 def get_gene_predictions(gene_symbol: str):
     try:
         return get_predictions(gene_symbol)
     except Exception:
         return {"error": "gene missing"}
 
-@app.get("/"+ENDPOINT+"/api/v1/genes")
+@app.get("/"+ENDPOINT_API+"/api/v1/genes")
 def get_genes(gene_symbol: str):
     return allgenes
 
-@app.post("/"+ENDPOINT+"/api/v1/texify")
+@app.post("/"+ENDPOINT_API+"/api/v1/texify")
 async def postlatex(info : Request):
     data = await info.json()
     print(data)

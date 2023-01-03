@@ -3,7 +3,7 @@
     <title>PrismEXP predictions</title>
 
     <link
-        href="h{{endpoint}}/static/prismexp.png"
+        href="{{endpoint}}/static/prismexp.png"
         rel="icon"
         media="(prefers-color-scheme: light)"
     />
@@ -46,7 +46,7 @@
             if(gene_sym.length > 0){
                 $('#predictions').fadeOut();
                 $('#datawait').fadeIn();
-                fetch('/{{endpoint}}/gene/'+gene_sym)
+                fetch('{{endpoint}}/gene/'+gene_sym)
                     .then((response) => response.text())
                     .then((text) => {
                         $("#predictions").html(text);
@@ -81,6 +81,13 @@
                     suggest(matches);
                 }
             });
+
+            var genesymbol = "{{genesymbol}}";
+            if(genesymbol != ""){
+                console.log(genesymbol);
+                $("#genesymbolsearch").val(genesymbol);
+                submitGeneSearch();
+            }
         });
 
         $(document).on('click', function() {
@@ -570,16 +577,6 @@ table {
 </style>
 
 </style>
-
-<script>
-    if (window.location.href.match(/\/gene\//)) {
-        var suffix = window.location.href.substring(window.location.href.indexOf("gene/") + "gene/".length);
-        console.log("works nice:", suffix)
-    }
-    else{
-        console.log("nothing")
-    }
-</script>
 
 </head>
 <body>
