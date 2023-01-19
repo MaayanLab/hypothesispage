@@ -28,13 +28,20 @@
 	    $(document).ready(function () {
             $('#example_{{loop.index}}').DataTable({
                 "autoWidth": false,
+                dom: 'Bfrtip',
                 "columnDefs": [
                     { "width": "20px", "targets": 0 },
                     { "width": "50px", "targets": 2 },
                     { "width": "50px", "targets": 3 }
                 ],
                 buttons: [
-                    'copy', 'csv'
+                    {
+                        extend: 'copy'
+                    },
+                    {
+                        extend: 'csv',
+                        title: '{{library}}_prismexp'
+                    }
                 ]
             });
         });
