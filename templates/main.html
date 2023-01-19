@@ -574,6 +574,22 @@ table {
     filter: drop-shadow(3px 3px 3px #666);
 }
 
+.prismexplogo {
+    animation: transitionIn 0.75s;
+}
+
+@keyframes transitionIn{
+    from {
+        opacity: 0;
+        transform: rotateX(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: rotateX(0deg);
+    }
+}
+
+
 </style>
 
 </style>
@@ -589,7 +605,7 @@ table {
                     <h3>Submit a human gene symbol to retrieve precomputed predictions about the gene's functions based on automatically vertically partitioned gene-gene co-expression matrices from <a href="https://maayanlab.cloud/archs4" target="_blank">ARCHS4</a>, and selected gene set libraries from <a href="https://maayanlab.cloud/Enrichr/" target="_blank">Enrichr</a>.</h3>
                 </div>
                 <div id="second">
-                    <img src="{{endpoint}}/static/prismexp_white.png" width=100>
+                    <img src="{{endpoint}}/static/prismexp_white.png" width=100 class="prismexplogo">
                 </div>
             </div>
             

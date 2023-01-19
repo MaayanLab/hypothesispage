@@ -32,6 +32,9 @@
                     { "width": "20px", "targets": 0 },
                     { "width": "50px", "targets": 2 },
                     { "width": "50px", "targets": 3 }
+                ],
+                buttons: [
+                    'copy', 'csv'
                 ]
             });
         });
@@ -43,6 +46,7 @@
         <i class="fa fa-question-circle-o"><span class="tooltiptext">The gene AUC reflects how well known gene functions of {{gene_symbol}} could be retrieved. An AUC of 1 would represent perfect ranking of gene functions and 0.5 would be random. Entries colored <i class="fa fa-square green" aria-hidden="true"></i> represent known gene functions.</span></i>
         </div>
     </h4>
+    <i class="fa fa-square green" aria-hidden="true"></i> = previously known annotation
     <table id="example_{{loop.index}}" class="display" style="width:100%">
         <thead>
             <tr>
