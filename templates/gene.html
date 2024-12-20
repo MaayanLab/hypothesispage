@@ -1,9 +1,10 @@
 <div class="nopad">
-    
     <div class="workflow">
         <a href="{{endpoint}}/workflow" target="_blank">
             <img src="{{endpoint}}/static/jupyter.png" class="jupyter_icon">
         </a>
+        <br><button id="copy-btn" style="margin-top: 3px; width: 100px;">Copy URL</button>
+        <div style="position: absolute;" id="copy-feedback" class="copy-feedback" style="display: none;">URL copied!</div>
     </div>
     |
     {% for library, predictions in predictions.items()  if not library == "OMIM_Disease" %}
@@ -25,7 +26,7 @@
     {% for library, predictions in predictions.items() if not library == "OMIM_Disease" %}
     
     <script type="text/javascript" class="init">
-	    $(document).ready(function () {
+            $(document).ready(function () {
             $('#example_{{loop.index}}').DataTable({
                 "autoWidth": false,
                 dom: 'Bfrtip',
@@ -40,7 +41,7 @@
                     },
                     {
                         extend: 'csv',
-                        title: '{{library}}_prismexp'
+                        title: '{{gene_symbol}}_{{library}}_prismexp'
                     }
                 ]
             });
@@ -90,5 +91,39 @@
 
     {% endfor %}
 
-</div>
+<script>
 
+function copyToClipboard(text) {
+    // create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+
+    // select and copy the text
+    textarea.select();
+    document.execCommand('copy');
+
+    // remove the temporary textarea element
+    document.body.removeChild(textarea);
+}
+
+var copyBtn = document.getElementById('copy-btn');
+var copyFeedback = document.getElementById('copy-feedback');
+
+copyBtn.addEventListener('click', function() {
+  const textToCopy = 'https://maayanlab.cloud/prismexp/g/{{gene_symbol}}'; // change this to the text you want to copy
+  copyToClipboard(textToCopy);
+  
+  // show copy feedback for 2 seconds and fade out
+  copyFeedback.style.display = 'block';
+  setTimeout(function() {
+    copyFeedback.classList.add('fade-out');
+    setTimeout(function() {
+      copyFeedback.style.display = 'none';
+      copyFeedback.classList.remove('fade-out');
+    }, 500);
+  }, 1000);
+});
+</script>
+
+</div>

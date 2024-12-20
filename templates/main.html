@@ -99,6 +99,7 @@
         $(document).on('click', function() {
             $(".autocomplete-suggestions").css("display", "none");
         })
+
     </script>
 
     <style>
@@ -402,6 +403,16 @@ table {
     background-color: #00ffd5 !important;
 }
 
+.copy-feedback {
+  display: none;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.copy-feedback.fade-out {
+  opacity: 0;
+}
+
 /* Animation */
 @keyframes animate {
   0%,
@@ -595,6 +606,29 @@ table {
     }
 }
 
+.sidebar {
+
+width: 50px;
+height:40px;
+bottom: 0px;
+margin-left: -8px;
+padding-top:8px;
+padding-left:12px;
+border-radius: 6px;
+position: -webkit-sticky;
+position: sticky;
+top: 0;
+background-color: #000000;
+
+z-index: 10;
+transform: rotate(90deg);
+color: rgb(255, 255, 255);
+}
+
+.sidebar a {
+color:rgb(255, 255, 255);
+}
+
 
 </style>
 
@@ -602,6 +636,12 @@ table {
 
 </head>
 <body>
+
+    
+    <div class="sidebar">
+        <a href="{{endpoint}}/help" target="_blank">Help</a>
+    </div>
+
 
     <div class="stuff">
         <div id="searchbox">
@@ -679,10 +719,14 @@ table {
                                 </a>
                             </div>
                         </div>
-                        <div class="row">
-                            <font style="font-size: 12px; color: black;">
-                                Publication under review
-                            </font>
+                        <div class="row justify-content-center">
+                            <div style="width: 100%;">
+                                <font style="font-size: 12px; color: black;">
+                                    Lachmann A, Rizzo KA, Bartal A, Jeon M, Clarke DJB, Ma’ayan A. 2023. PrismEXP: gene annotation prediction from stratified gene-gene co-expression matrices. PeerJ 11:e14927 https://doi.org/10.7717/peerj.14927
+                                </font>
+                                <br>
+                                <a href="https://peerj.com/articles/14927/" target="_blank">https://peerj.com/articles/14927/</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -691,4 +735,12 @@ table {
 
     </div>
 </body>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-11CHWPE9XZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-11CHWPE9XZ');
+</script>
 </html>

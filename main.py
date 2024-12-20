@@ -22,6 +22,7 @@ from scipy import stats
 import json
 import ssl
 import re
+import math
 
 
 ENDPOINT = os.getenv('ENDPOINT', "prismexp")
@@ -78,9 +79,17 @@ def get_predictions(gene_symbol):
         sauc = loadSetAUCS3(lib)
         setinfo = []
         for i in range(len(predictions)):
+            score = predictions[i]
+            term_auc = sauc[i]
+            if math.isnan(score):
+                score = 0.0
+            if math.isnan(term_auc):
+                term_auc = 0.0
             setinfo.append({"term": sets[i], "score": float(predictions[i]), "term_auc": float(sauc[i])})
         setinfo = sorted(setinfo, key=lambda d: d['score'], reverse=True)
         result["predictions"][lib] = {}
+        if math.isnan(float(gauc[0])):
+            gauc[0] = -1
         result["predictions"][lib]["auc"] = float(gauc[0])
         result["predictions"][lib]["prediction"] = setinfo
     return result 
@@ -132,6 +141,10 @@ async def main_page_gene(request: Request, gene_symbol: str):
 @app.get("/"+ENDPOINT_API+"/workflow", response_class=HTMLResponse)
 async def workflow_page(request: Request):
     return templates.TemplateResponse("workflow.html", {"request": request})
+
+@app.get("/"+ENDPOINT_API+"/help", response_class=HTMLResponse)
+async def workflow_page(request: Request):
+    return templates.TemplateResponse("help.html", {"request": request, "endpoint": ENDPOINT})
 
 @app.get("/"+ENDPOINT_API+"/gene/{gene_symbol}", response_class=HTMLResponse)
 async def read_item(request: Request, gene_symbol: str):
