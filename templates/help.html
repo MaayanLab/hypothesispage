@@ -1,0 +1,867 @@
+<html>
+<head>
+    <title>PrismEXP Help</title>
+
+    <link
+        href="{{endpoint}}/static/prismexp.png"
+        rel="icon"
+        media="(prefers-color-scheme: light)"
+    />
+    <link
+        href="{{endpoint}}/static/prismexp_white.png"
+        rel="icon"
+        media="(prefers-color-scheme: dark)"
+    />
+
+    <link href="{{endpoint}}/static/styles.css" rel="stylesheet">
+
+
+    
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    <script type="module" language="javascript" src="{{endpoint}}/static/jquery.auto-complete.min.js"></script>
+    <link rel="stylesheet" href="{{endpoint}}/static/jquery.auto-complete.css">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async  src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+
+    <script>
+        $(document).on('click', 'a[href^="#"]', function (event) {
+            event.preventDefault();
+
+            $('html, body').animate({
+                scrollTop: $($.attr(this, 'href')).offset().top
+            }, 500);
+        });
+    </script>
+
+    <style>
+
+        body {
+            color: white;
+            background-color: black;
+            padding-top: 60px;
+        }
+
+        #searchbutton {
+            height: 16px;
+            padding: 4px;
+        }
+
+        .search {
+            padding: 0px;
+            height: 30px;
+        }
+
+        #colc {
+            width: 420px;
+            padding-top: 50px
+        }
+
+        .search {
+            height: 0px !important;
+            background-color: none !important;
+        }
+
+        #genesymbolsearch {
+            padding: 4px;
+            height: 40px;
+            width: 200px
+        }
+        #searchicon {
+            margin-top: -8px;
+            margin-left: -6px;
+        }
+
+        .search input {
+            border-radius: 6px;
+            color: black;
+        }
+
+        .search button {
+            height: 40px;
+            margin-top: -5px;
+        }
+
+        #examples {
+            margin-top: 44px;
+            margin-left: 4px;
+        }
+
+        .search .fa-search {
+            color: black;
+            font-weight: bold;
+        }
+
+        /* CSS */
+.button-85 {
+  width: 190px !important;
+  padding: 0.3em 1em;
+  outline: none;
+  color: rgb(0, 0, 0);
+  background: rgb(255, 255, 255);
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 6px;
+  border: 2px solid black;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transform: translateX(0);
+  transition: transform 200ms
+}
+
+.button-85:hover {
+  transform: translateX(2px);
+}
+
+.button-85:active {
+    background: black;
+    color: rgb(255, 255, 255);
+    border: 0px solid black;
+}
+
+.button-85:active::after {
+    background: black;
+}
+
+.button-85:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 6px;
+}
+
+@keyframes glowing-button-85 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgb(255, 255, 255);
+  left: 0;
+  top: 0;
+  border-radius: 6px;
+}
+
+/* angled div */
+.slanted-div {
+  position: relative;
+  padding: 0px 0px;
+  background: #f3f3f3;
+  color: black;
+  overflow: visible;
+  margin-left: 0px;
+  margin-right: -20px;
+  margin-top: 60px;
+  z-index: 1;
+
+}
+
+/* where the magic happens */
+.slanted-div:before, .slanted-div:after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: inherit;
+  z-index: -1;
+  top: 0;
+  transform-origin: left top;
+  transform: skewY(-7deg);
+}
+
+.slanted-div:after {
+  bottom: 0;
+  transform-origin: right bottom;
+  transform: skewY(-7deg);
+}
+
+/* displays the content inside, as these settings in the parent breaks the effect */
+.slanted-div div {
+  padding: 30px;
+  font-size: 1em;
+}
+
+#wrapper {
+    border: 1px solid black;
+    overflow: hidden;
+}
+#first {
+    float:left;
+    width: 78%;
+}
+#second {
+    width: 22%;
+    overflow: hidden;
+}
+
+#footer {
+    color: rgb(0, 0, 0) !important;
+    padding: 0px;
+}
+
+#footer img {
+    height: 80;
+}
+
+.row {
+    margin: 10px !important;
+    padding: 10px !important;
+    text-align: center;
+}
+
+.col-sm-4 {
+    margin: 0px;
+    padding: 10px !important;
+    text-align: center;
+}
+
+.stuff{
+    margin: 0px !important;
+    margin-right: 20px !important;
+    padding: 0px;
+
+}
+
+#searchbox {
+    margin-left: 60px;
+}
+
+.examplelink{
+    color: white;
+}
+
+.examplelink:hover{
+    color: rgb(249, 212, 255);
+}
+
+table.dataTable td {
+            font-size: 12px;
+        }
+
+        table.dataTable th {
+            font-size: 14px;
+        }
+
+table {
+    color: black;
+}
+
+.dataTables_wrapper {
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+#predictions {
+    padding: 0px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+.loader {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-left: 45% !important;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+/* Loader Blue Circle */
+.loader::before {
+  background: #000000;
+  animation: animate 2s ease-in-out infinite;
+  content:"Loading...";
+  color: white;
+  padding-top:38px;
+  font-weight: bold;
+}
+
+/* Loader Glassmorphism */
+.loader::after {
+  background: rgba(56, 109, 241, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: animate 2s ease-in-out infinite;
+  z-index: 1;
+  animation-delay: -1s;
+}
+
+#library_selection{
+    width: 330px;
+}
+
+.gold {
+    background-color: #00ffd5 !important;
+}
+
+/* Animation */
+@keyframes animate {
+  0%,
+  100% {
+    transform: translateX(-80px);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+}
+
+#waiting {
+    text-align: center;
+    width: 100%;
+}
+
+#datawait {
+    display: none;
+}
+
+.nopad {
+    padding-bottom: 0px !important;
+}
+
+.appyter_btn{
+    background-image: url('{{endpoint}}/static/appyter.png');
+    background-size: 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 200px;
+    height: 36px;
+    font-size: 2rem;
+
+    width: 190px !important;
+    outline: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    position: relative;
+    border-radius: 6px;
+    border: 2px solid black;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transform: translateX(0);
+    transition: transform 100ms;
+
+    float: left;
+}
+
+.appyter_btn {
+    color: white;
+    padding: .9em 1em;
+    margin-top: 6px;
+}
+
+.appyter_btn:hover {
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition: 0.1s;
+    box-shadow: 0px 2px 3px rgba(0,0,0,.13) ,1px 2px 2px rgba(0,0,0,.1) , -1px -2px 2px rgba(0,0,0,.05) ;
+}
+
+.appyter_btn:active {
+    background-color: rgb(0, 0, 0);
+    cursor: pointer;
+    background-image: url('{{endpoint}}/static/appyter_white.png');
+}
+
+.appyter_btn span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.appyter_btn span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.appyter_btn:hover span {
+    padding-right: 25px;
+}
+
+.appyter_btn:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.appyter_lib_select{
+    padding-top: 12px !important;
+    padding-left: 0px !important;
+    padding-bottom: 12px !important;
+    width: 100%;
+    height: 70px !important;
+}
+
+.fleft {
+    padding: 0px !important;
+    margin-right: 20px;
+    float: left;
+}
+
+.tooltip {
+  padding: 0px !important;
+  opacity: 1 !important;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 80%;
+    max-width: 600px;
+    display: hidden;
+}
+
+.error img {
+    width: 160px;
+}
+
+.error span {
+    max-width: 400px;
+    margin-left: 20px;
+}
+
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    font-family: "Poppins", sans-serif;
+    transform: translateX(-50%);
+    margin-top: 18px;
+    visibility: hidden;
+    background: rgba(51, 51, 51, 0.65);
+    backdrop-filter: blur(5px);
+    color: white;
+    font-weight: bold;
+    padding: 12px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    width: 240px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+.green {
+    color: #00ffd5;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.workflow {
+    float: right;
+    margin-right: 0px;
+}
+
+.workflow img {
+    width: 100px;
+}
+
+.workflow img:hover {
+    width: 100px;
+    -webkit-filter: drop-shadow(3px 3px 3px #666);
+    filter: drop-shadow(3px 3px 3px #666);
+}
+
+.prismexplogo {
+    animation: transitionIn 0.75s;
+}
+
+.text-left{
+    text-align: left;
+    width: 800px;
+    background-color: #002bff;
+}
+
+@keyframes transitionIn{
+    from {
+        opacity: 0;
+        transform: rotateX(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: rotateX(0deg);
+    }
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+  padding: 0px;
+}
+
+.info{
+    width: 600px;
+}
+
+.info2{
+    width: 900px;
+}
+
+.wrapper {
+    width: 900px;
+    overflow: hidden; /* will contain if #first is longer than #second */
+    padding: 0px !important;
+    margin: 0px;
+    margin-top: 20px;
+}
+.first2 {
+    width: 400px;
+    float:left; /* add this */
+    padding: 0px !important;
+    margin: 0px;
+}
+.second2 {
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+}
+
+.first3 {
+    width: 400px;
+    float: left;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+}
+
+.second3 {
+    width: 480px;
+    float:right; /* add this */
+    padding: 0px !important;
+    margin: 0px;
+}
+
+.sidebar {
+
+    width: 50px;
+    height:40px;
+    bottom: 0px;
+    margin-left: -8px;
+    padding-top:8px;
+    padding-left:12px;
+    border-radius: 6px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #000000;
+
+    z-index: 10;
+    transform: rotate(90deg);
+    color: rgb(255, 255, 255);
+}
+
+.sidebar a {
+    color:rgb(255, 255, 255);
+}
+
+.citation{
+    background-color: lightgoldenrodyellow;
+    border: 1px solid goldenrod;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+</style>
+
+</style>
+
+</head>
+<body>
+
+    <div class="stuff">
+        <div id="searchbox">
+            <div class="wrapper" class="d-flex p-2">
+                <div id="first">
+                    <h1>PrismEXP Help Center</h1>
+                    <h3>Welcome to the help page for PrismEXP, a tool for annotating genes with biological information. Here you will find information on how to use the tool, the algorithm behind it, and a tutorial to guide you through the process.</h3>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <div id="second">
+                    <img src="{{endpoint}}/static/prismexp_white.png" width=100 class="prismexplogo">
+                </div>
+            </div>
+        </div>
+
+        <div class="align-items-center"></div>
+            <div class="slanted-div">
+
+                <div class="info center">| <a href="#tutorialvid">Tutorial Video</a> | <a href="#algorithm">PrismEXP algorithm</a> | <a href="#website">PrismEXP website</a> | <a href="#appyter">PrismEXP Appyter</a> |</div>
+
+                <div id="publication" class="info center">
+                    PrismEXP is published at PeerJ and can be accessed here: <a href="https://peerj.com/articles/14927/">https://peerj.com/articles/14927/</a>
+                    <br><br>
+                    When using PrismEXP please cite:
+                    <div class="citation">
+                        Lachmann A, Rizzo KA, Bartal A, Jeon M, Clarke DJB, Ma’ayan A. 2023. PrismEXP: gene annotation prediction from stratified gene-gene co-expression matrices. PeerJ 11:e14927 https://doi.org/10.7717/peerj.14927
+                    </div>
+                </div>
+
+                <div id="tutorials" class="info center">
+                    <h3 id="tutorialvid">Tutorial Video</h3>
+                    <div>This video is 18 minutes long and discusses the basic principle of PrismEXP as well as ways you can use and interact with the software.
+                    </div>
+                    <br>
+                    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/GYV5dJu72zw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+
+                <div class="info center">
+                    <h3 id="algorithm">The PrismEXP algorithm</h3>
+
+                    The PrismEXP algorithm is based on the idea behind the Simpson's Paradox. The Simpson's Paradox states that two variables can exhibit relationships (e.g., correlation) that differ between subsets of the data compared to their relationship across the entire data. An example of this behavior is depicted in the figure below. The figure is showing five clusters in which when observed individually, we see a positive correlation between variable X and Y, but the correlation is negative when all samples are considered.
+                    <br/><br/>
+                    <p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Simpsons_paradox_-_animation.gif" width=500/>
+                    (Source: Wikimedia, Pace~svwiki, distributed under <a href="https://creativecommons.org/licenses/by-sa/4.0">CC-BY-SA 4.0</a> licence)
+                    </p>
+
+                    PrismEXP tries to maximize the information from large collection of gene expression studies, namely, ARCHS4, to make gene annotation predictions. To achieve this, gene expression samples are clustered into groups of samples with a similar expression profile. This clustering is unsupervised. It automatically groups samples into clusters likely related to their natural division into tissues, cell types, and cell lines. A correlation matrix is computed for each cluster (e.g., 100 clusters).
+                    <br><br>
+                    <p><b>So how does PrismEXP make annotation predictions for a specific gene?</b></p>
+                    \(g_1\)
+
+                    Assuming we have computed \(N\) correlation matrices and a gene \(g_1\), we now need a database with known gene annotations in the form of a GMT file. A GMT file contains, in each row, a gene annotation term, for example a biological pathway, followed by a set of gene symbols. All genes following the biological term are annotated with it. 
+                    The genes in a row of a GMT file are also called a gene set. In this example, all genes in the gene set are annotated as members of the pathway. PrismEXP tries to extend a given gene set with genes that have similarities to the genes of that set. In the simple example of a single correlation matrix, 
+                    a logical solution would be to rank all genes based on their average correlation to the genes in the gene set. This method already works quite well in recovering known gene annotations and was used previously in the software tools and web-based resources <a href="https://maayanlab.cloud/archs4">ARCHS4</a> and <a href="https://maayanlab.cloud/geneshot">Geneshot</a>.
+
+                    <br><br>
+                    <p><b>Example:</b><br><br>
+                    
+                    Gene set \(\mathbb{S}\), with \(|\mathbb{S}| = M\) from GO_Biological_Processes_2021:<br>
+                    <b>mismatch repair (GO:0006298)</b> = {MLH1, LIG1, RPA2, RPA3, RPA1, MSH2, ...}
+                    <br>average correlation for: 
+                    
+                    \[cor(\mathbb{S}, g_1) = \frac{cor(\textrm{MLH1}, g_1) + cor(\textrm{LIG1}, g_1) + cor(\textrm{RPA2}, g_1) + \ldots }{M}\]
+                    
+                    </p>
+
+                    <br>
+                    But in PrismEXP, instead of just having one correlation matrix, we have many. We require a strategy of ranking genes while taking the average correlation score from each correlation matrix into account.
+                    Here is where the machine learning step comes into play. PrismEXP takes in multiple average correlation scores (derived from correlation matrices \(C_1, \ldots, C_N\)) and maps them to a single association score \(a_{\textrm{score}}\):
+
+                    \[a_{\textrm{score}}(\mathbb{S}, g_1, \{C_1, \ldots, C_N\}) = f(cor(\mathbb{S}, g_1 | C_1), \ldots, cor(\mathbb{S}, g_1 | C_N))\]
+
+                    <br>
+                    The function \(f\) represents a machine learning regression algorithm. The choice of the regression algorithm is not not critical for PrismEXP. Any suitable algorithm would work for this. For example, Random Forest performs well. PrismEXP uses the lightGBM algorithm that is a gradient-boosting framework that uses tree-based learning algorithms. lightGBM is related to xgboost with improved performance.
+
+                    <br><br>
+                    <b>Training the model</b>
+                    <br><br>
+                    To train \(f\) we select a random pair of gene \(g_x\) and gene set \(\mathbb{S}\). There are now two scenarios: \(g_x \in \mathbb{S}\) or \(g_x \notin \mathbb{S}\). If \(g_x \in \mathbb{S}\) remove the gene from \(\mathbb{S}\) (\(\mathbb{S} - \{g_x\}\)) and caclulate all average correlation scores \(cor(\mathbb{S} - \{g_x\}, g_x, C_{i})\), for \(1 \leq i \leq N\). \(f\) should produce a 1 if \(g_x \in \mathbb{S}\), otherwise 0. We sample many such pairs to build our training set.
+                    The idea is that PrismEXP can learn dependencies between different correlation matrices helping the algorithm to differentiate between true and false samples.
+                    <br><br>
+                    As a result of training, PrismEXP will take \(N\) correlation matrices, a gene set \(\mathbb{S}\), and a gene \(g_x\) and will output an association score. The higher the association score, the more likely \(g_x\) belongs to the set \(\mathbb{S}\).
+                </div>
+
+                <div class="info2 center">
+                    <h3 id="website"> The PrismEXP website</h3>
+                    Below is a guide that covers the various features of the PrismEXP website. This website provides access to precomputed PrismEXP predictions for several commonly used gene set libraries.
+                    <div class="wrapper">
+                        <div class="first2">
+                            <img src="{{endpoint}}/static/prismx_1.png" width=380>
+                        </div>
+                        <div class="second2">
+                            This is the top of the page of the PrismEXP site. It contains an input field for gene symbols, and a submit button. Enter any gene of interest to receive predictions about its likely annotations. When you start typing, valid gene symbol suggestions will be presented.
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <div class="wrapper">
+                        <div class="first2">
+                            <img src="{{endpoint}}/static/prismx_gene_auc.png" width=380>
+                        </div>
+                        <div class="second2">
+                            After submitting the gene symbol, the PrismEXP website will display precomputed predicted and known gene annotations for several gene set libraries. For each gene set library, there will be a separate table. The Gene AUC value represents how well known gene annotations are predicted by the PrismEXP algorithm from the given library. In this example, the AUC of SOX2 ChEA annotations is 0.706.
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <div class="wrapper">
+                        <div class="first2">
+                            <img src="{{endpoint}}/static/prismx_set_reliability.png" width=380>
+                        </div>
+                        <div class="second2">
+                            In the result table, one of the columns is the set reliability. It is the AUC of the gene set with respect to all genes. In this example, the target genes of the transcription factor RING1B were predicted with an AUC of 0.856. This score is available because all gene predictions were precomputed. 
+                        </div>
+                    </div>
+
+
+                    <hr/>
+                    <div class="wrapper">
+                        <div class="first2">
+                            <img src="{{endpoint}}/static/prismx_known.png" width=380>
+                        </div>
+                        <div class="second2">
+                            If an annotation was previously known, the row in the prediction table is highlighted in cyan. In the example, two of the top three predictions are already known annotations for the gene.
+                        </div>
+                    </div>
+
+                    <div class="wrapper">
+                        <div class="first2">
+                            <img src="{{endpoint}}/static/prismx_appyter_library.png" width=380>
+                        </div>
+                        <div class="second2">
+                            Once a gene symbol is searched on the PrismEXP website, there will be a second option to calculate gene annotations using the PrismEXP Appyter. Since the Appyter is performing real-time predictions on a pre-trained model, all gene set libraries in Enrichr are possible to be selected. Select a desired library and select the Appyters button. This will redirect the user to the Appyter page. Calculating the predictions takes around 2 minutes since the features have to be computed from 100 correlation matrices.
+                        </div>
+                    </div>
+
+                    <h3 id="appyter">The PrismEXP Appyter</h3>
+                    <div class="wrapper">
+                        <div class="first3">
+                            The PrismEXP Appyter can be accessed from the PrismEXP website, or by navigating directly to <a href="https://appyters.maayanlab.cloud/#/PrismEXP">https://appyters.maayanlab.cloud/#/PrismEXP</a>.
+                            Once a gene symbol is submitted for analysis from the PrismEXP website, there will be an option to submit the gene for analysis with the PrismEXP Appyter. Since the Appyter is performing real-time predictions with a pre-trained model, all gene set libraries in Enrichr can be selected. You can select a desired library, and then click on the Appyter button. This will redirect you to the Appyter page. Calculating the predictions takes about 2 minutes since the features have to be computed from 100 correlation matrices.
+                        </div>
+                        <div class="second3">
+                            <img src="{{endpoint}}/static/prismx_appyter_2.png" width=390>
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <div class="wrapper">
+                        <div class="first3">
+                            Once the Appyter started executing, it will take approximately 2 minutes to finish the calculations. The result will include a validation plot displaying the ROC curve for the known gene annotations in the provided gene set library. This file can also be downloaded as a PDF or as a PNG image files. Generally, a high AUC can give you confidence that other highly ranked gene annotations are relevant for the gene of interest.
+                        </div>
+                        <div class="second3">
+                            <img src="{{endpoint}}/static/prismx_appyter_3_auc.png" width=390>
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <div class="wrapper">
+                        <div class="first3">
+                            The prediction table is the final output of the PrismEXP Appyter. It shows a ranking of terms from the given gene set library. The top term is the most associated with your queried gene by the PrismEXP algorithm. The table contains four columns (predictions, z-score, p-value, and Bonferroni). The predictions column contains the direct output from PrismEXP. In this example, HEMOPOIESIS is the top prediction. The z-score is calculated by computing a z-score normalization over the whole prediction column. p-values are calculated from the z-score, assuming a normal distribution. The Bonferroni column contains p-values corrected for multiple hypothesis testing. It should be noted that due to the nature of the regression model, the ranking is more important than the p-values. As a result of the model, p-values are usually not very significant. Since p-values are calculated from the population of the association scores, very small p-values indicate that there are few associations for the given gene in the gene set library.
+                        </div>
+                        <div class="second3">
+                            <img src="{{endpoint}}/static/prismx_appyter_4_table.png" width=390>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="footer" class="row">
+                    <div class="container nopad">
+            
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <a href="https://druggablegenome.net/" target="_blank">
+                                    <img src="{{endpoint}}/static/IDG_filled.png">
+                                </a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="https://www.lincsproject.org/" target="_blank">
+                                    <img src="{{endpoint}}/static/LINCS.gif">
+                                </a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="https://www.lincs-dcic.org/" target="_blank">
+                                    <img src="{{endpoint}}/static/dcic.png">
+                                </a>
+                            </div>
+                        </div>
+            
+                        <div class="row" id="affiliations">
+                            <div class="col-sm-4">
+                                <a href="https://icahn.mssm.edu/research/bioinformatics" target="_blank">
+                                    <img src="{{endpoint}}/static/mountsinai.png">
+                                </a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="https://icahn.mssm.edu/research/labs/maayan-laboratory" target="_blank">
+                                    <img src="{{endpoint}}/static/MaayanLab_logo.png">
+                                    <p>© The Ma'ayan Lab</p>
+                                </a>
+                            </div>
+            
+                            <div class="col-sm-4">
+                                <a href="https://github.com/MaayanLab/prismexp" target="_blank">
+                                    <img src="{{endpoint}}/static/octocat_GH.png" id="GH_logo">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <font style="font-size: 12px; color: black;">
+                                Publication under review
+                            </font>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-11CHWPE9XZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-11CHWPE9XZ');
+</script>
+</html>

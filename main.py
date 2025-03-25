@@ -85,14 +85,21 @@ def get_predictions(gene_symbol):
                 score = 0.0
             if math.isnan(term_auc):
                 term_auc = 0.0
-            setinfo.append({"term": sets[i], "score": float(predictions[i]), "term_auc": float(sauc[i])})
+            # Check if the gene_symbol is in the gold annotations for this term
+            is_gold = gene_symbol.upper() in gold_library[lib].get(sets[i], [])
+            setinfo.append({
+                "term": sets[i],
+                "score": float(predictions[i]),
+                "term_auc": float(sauc[i]),
+                "is_gold": is_gold  # Add gold flag
+            })
         setinfo = sorted(setinfo, key=lambda d: d['score'], reverse=True)
         result["predictions"][lib] = {}
         if math.isnan(float(gauc[0])):
             gauc[0] = -1
         result["predictions"][lib]["auc"] = float(gauc[0])
         result["predictions"][lib]["prediction"] = setinfo
-    return result 
+    return result
 
 def read_gmt(gmt_file: str):
     url = "https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName="+gmt_file
